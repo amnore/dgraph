@@ -1504,6 +1504,10 @@ func (s *Server) doQuery(ctx context.Context, req *Request) (resp *api.Response,
 	if rerr = s.doMutate(ctx, qc, resp); rerr != nil {
 		return
 	}
+	
+	if bool(glog.V(3)) || worker.LogRequestEnabled() {
+		glog.Infof("Response: %v", resp)
+	}
 
 	// TODO(Ahsan): resp.Txn.Preds contain predicates of form gid-namespace|attr.
 	// Remove the namespace from the response.
